@@ -313,13 +313,18 @@ class Fragment(object):
                 self.height = data["dimensions"]["height"]
                 self.link_to = Fragment.Link.parse(data.get("linkTo"))
                 self.label = data.get("label")
+                self.alt = data.get("alt")
+                self.copyright = data.get("copyright")
 
             def as_html(self, link_resolver):
-                img_tag = """<img src="%(url)s" width="%(width)s" height="%(height)s">""" % {
+                img_tag = """<img src="%(url)s" width="%(width)s" height="%(height)s" alt="%(alt)s">""" % {
                     'url': self.url,
                     'width': self.width,
-                    'height': self.height
+                    'height': self.height,
+                    'alt': self.alt
                 }
+                if self.copyright:
+                    img_tag += """<span class="copyright">%s</span>""" % self.copyright
                 if self.link_to is None:
                     return img_tag
                 else:
